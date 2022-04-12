@@ -4,12 +4,12 @@
 // Time to Complete Project: 
 
 // Modifications Made (Point Breakdown):
-// 1. Create a new scrolling tile sprite for the background (5 pts) (30 Minutes)
+// 1. Implement a simultaneous two-player mode (30 pts) (3 hours)
 // 2. Display the time remaining (in seconds) on the screen (10 pts) (1 hr + 30 mins)
-// 3. 
-// 4. 
-// 5. 
-// 6.
+// 3. Create a new scrolling tile sprite for the background (5 pts) (30 Minutes) (still needs to be fixed)
+//  
+//  
+// 
 
 
 let config = {
@@ -26,4 +26,4 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 
 // keyboard keys
-let keyF, keyR, keyLEFT, keyRIGHT;
+let keyLEFT, keyRIGHT, keyUP, keyDOWN, keyA, keyD, keyW, keyR;
