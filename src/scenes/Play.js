@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         this.load.image('player1rocket', './assets/player1rocket.png');
         this.load.image('player2rocket', './assets/player2rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('smallSpaceship', './assets/smallSpaceship.png');
         this.load.image('starfield', './assets/newStarfield.png');
 
         // load explosion animation spritesheet
@@ -54,6 +55,10 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 6 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 7 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
 
+        // add smaller/faser spaceship (x1) (move this guy to the top of the screen)
+        this.fastShip = new Spaceship(this, game.config.width +  borderUISize*6, borderUISize*4, 'smallSpaceship', 0, 40).setOrigin(0, 0);
+        this.fastShip.moveSpeed = (this.fastShip.moveSpeed * 2);
+
         // explosion animation config
         this.anims.create({
             key: 'explode',
@@ -63,7 +68,9 @@ class Play extends Phaser.Scene {
 
         // initialize score
         this.p1Score = 0;
-        this.p2Score = 0;
+        if (this.twoPlayers == true) {
+            this.p2Score = 0;
+        }
         // display score
         let scoreConfig = {
             fontFamily: 'Courier',
@@ -77,7 +84,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        if (this.twoPlayer == false) {
+        if (this.twoPlayers == false) {
             this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
         }
         if (this.twoPlayers == true) {
@@ -98,7 +105,7 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 150;
         this.timeLeft = this.add.text(game.config.width - (borderUISize + borderPadding + scoreConfig.fixedWidth), borderUISize + borderPadding*2, "Time: "+this.gameTimeLeft.toString(), scoreConfig);
 
-        // 60-second play clock
+        // gamer timer - end game after 60/45 seconds
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.timeLeft.text = "Time: 0";
@@ -117,6 +124,15 @@ class Play extends Phaser.Scene {
             }
             this.gameOver = true;
         }, null, this);
+
+        // speed increase event
+        this.speedIncreaseEvent = this.time.delayedCall(30000, () => {
+            this.ship03.moveSpeed += 2;
+            this.ship02.moveSpeed += 2;
+            this.ship01.moveSpeed += 2;
+            this.fastShip.moveSpeed += 2;
+        }, null, this);
+        
     }
 
     update () {
@@ -149,6 +165,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+            this.fastShip.update();
 
         }
 
@@ -172,6 +189,12 @@ class Play extends Phaser.Scene {
             this.scoreLeft.text = this.p1Score;
             this.shipExplode(this.ship01);
         }
+        if (this.checkCollision(this.p1Rocket, this.fastShip)) {
+            this.p1Rocket.reset();
+            this.p1Score += this.fastShip.points;
+            this.scoreLeft.text = this.p1Score;
+            this.shipExplode(this.fastShip);
+        }
 
         // for player 2
         if (this.twoPlayers == true) {
@@ -192,6 +215,12 @@ class Play extends Phaser.Scene {
                 this.p2Score += this.ship01.points;
                 this.scoreMiddle.text = this.p2Score;
                 this.shipExplode(this.ship01);
+            }
+            if (this.checkCollision(this.p2Rocket, this.fastShip)) {
+                this.p2Rocket.reset();
+                this.p2Score += this.fastShip.points;
+                this.scoreMiddle.text = this.p2Score;
+                this.shipExplode(this.fastShip);
             }
         }
         

@@ -7,9 +7,13 @@
 // 1. Implement a simultaneous two-player mode (30 pts) (3 hours)
 // 2. Display the time remaining (in seconds) on the screen (10 pts) (1 hr + 30 mins)
 // 3. Create a new scrolling tile sprite for the background (5 pts) (30 Minutes)
-//  
-//  
+// 4. Create a new Spaceship type (w/ new artwork) thats smaller, moves faster,
+//    and is worth more points (20 pts) (1 hr)
+// 5. Implement the speed increase that happens after 30 seconds in the original game (5 pts) (20 mins)
 // 
+//
+// 
+// Total Points: 30 pts + 10 pts + 5 pts + 20 pts + 5 pts = 70 pts
 
 
 let config = {
