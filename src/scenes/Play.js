@@ -132,7 +132,7 @@ class Play extends Phaser.Scene {
             this.ship01.moveSpeed += 2;
             this.fastShip.moveSpeed += 2;
         }, null, this);
-        
+
     }
 
     update () {
@@ -250,6 +250,7 @@ class Play extends Phaser.Scene {
         });
 
         // score add and repaint
-        this.sound.play('sfx_explosion'); // add explosion sound effect
+        let sound = (Math.floor(Math.random() * 5) + 1);
+        this.sound.play('sfx_explosion'+sound.toString()); // add explosion sound effect
     }
 }
