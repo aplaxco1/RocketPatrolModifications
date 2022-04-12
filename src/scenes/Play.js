@@ -6,6 +6,8 @@ class Play extends Phaser.Scene {
     preload() {
         // load images and tile sprites
         this.load.image('rocket', './assets/rocket.png');
+        this.load.image('player1rocket', './assets/player1rocket.png');
+        this.load.image('player2rocket', './assets/player2rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/newStarfield.png');
 
@@ -26,7 +28,6 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
 
         // define keyboard keys
-        
         // player 1 keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -44,8 +45,8 @@ class Play extends Phaser.Scene {
             this.p1Rocket = new Player1Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
         }
         else if (this.twoPlayers == true) {
-            this.p1Rocket = new Player1Rocket(this, game.config.width/2 + 20, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
-            this.p2Rocket = new Player2Rocket(this, game.config.width/2 - 20, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+            this.p1Rocket = new Player1Rocket(this, game.config.width/2 + 20, game.config.height - borderUISize - borderPadding, 'player1rocket').setOrigin(0.5, 0);
+            this.p2Rocket = new Player2Rocket(this, game.config.width/2 - 20, game.config.height - borderUISize - borderPadding, 'player2rocket').setOrigin(0.5, 0);
         }
 
         // add spaceships (x3)
@@ -76,9 +77,15 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        if (this.twoPlayer == false) {
+            this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        }
         if (this.twoPlayers == true) {
+            scoreConfig.color = '#1C19E3';
+            this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+            scoreConfig.color = '#E31919';
             this.scoreMiddle = this.add.text(game.config.width/2 - 50, borderUISize + borderPadding*2, this.p2Score, scoreConfig);
+            scoreConfig.color = '#843605';
         }
 
 
@@ -95,8 +102,19 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.timeLeft.text = "Time: 0";
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 - 64, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            if (this.twoPlayers == true) {
+                if (this.p1Score > this.p2Score) {
+                    this.add.text(game.config.width/2, game.config.height/2 + 64, 'Player 1 Wins!', scoreConfig).setOrigin(0.5);
+                }
+                else if (this.p1Score < this.p2Score) {
+                    this.add.text(game.config.width/2, game.config.height/2 + 64, 'Player 2 Wins!', scoreConfig).setOrigin(0.5);
+                }
+                else if (this.p1Score == this.p2Score) {
+                    this.add.text(game.config.width/2, game.config.height/2 + 64, 'Player 1 and Player 2 Tied!', scoreConfig).setOrigin(0.5);
+                }
+            }
             this.gameOver = true;
         }, null, this);
     }
