@@ -6,7 +6,7 @@
 // Modifications Made (Point Breakdown):
 // 1. Implement a simultaneous two-player mode (30 pts) (3 hours)
 // 2. Display the time remaining (in seconds) on the screen (10 pts) (1 hr + 30 mins)
-// 3. Create a new scrolling tile sprite for the background (5 pts) (30 Minutes) (still needs to be fixed)
+// 3. Create a new scrolling tile sprite for the background (5 pts) (30 Minutes)
 //  
 //  
 // 

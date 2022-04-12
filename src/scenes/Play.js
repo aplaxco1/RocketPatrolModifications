@@ -66,7 +66,7 @@ class Play extends Phaser.Scene {
         // display score
         let scoreConfig = {
             fontFamily: 'Courier',
-            fontSize: '22px',
+            fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
             align: 'right',
