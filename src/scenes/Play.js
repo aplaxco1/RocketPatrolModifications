@@ -43,11 +43,11 @@ class Play extends Phaser.Scene {
         // add rocket (player 1 and player)
         this.twoPlayers = game.settings.twoPlayer;
         if (this.twoPlayers == false) {
-            this.p1Rocket = new Player1Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+            this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket', 0, 1).setOrigin(0.5, 0);
         }
         else if (this.twoPlayers == true) {
-            this.p1Rocket = new Player1Rocket(this, game.config.width/2 + 20, game.config.height - borderUISize - borderPadding, 'player1rocket').setOrigin(0.5, 0);
-            this.p2Rocket = new Player2Rocket(this, game.config.width/2 - 20, game.config.height - borderUISize - borderPadding, 'player2rocket').setOrigin(0.5, 0);
+            this.p1Rocket = new Rocket(this, game.config.width/2 + 20, game.config.height - borderUISize - borderPadding, 'player1rocket', 0, 1).setOrigin(0.5, 0);
+            this.p2Rocket = new Rocket(this, game.config.width/2 - 20, game.config.height - borderUISize - borderPadding, 'player2rocket', 0, 2).setOrigin(0.5, 0);
         }
 
         // add spaceships (x3)
@@ -55,7 +55,7 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 6 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 7 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
 
-        // add smaller/faser spaceship (x1) (move this guy to the top of the screen)
+        // add smaller/faser spaceship (x1)
         this.fastShip = new Spaceship(this, game.config.width +  borderUISize*6, borderUISize*4, 'smallSpaceship', 0, 40).setOrigin(0, 0);
         this.fastShip.moveSpeed = (this.fastShip.moveSpeed * 2);
 
@@ -188,12 +188,18 @@ class Play extends Phaser.Scene {
             this.p1Score += this.ship01.points;
             this.scoreLeft.text = this.p1Score;
             this.shipExplode(this.ship01);
+            // update time
+            this.clock.delay += 3000;
+            this.gameTime += 3;
         }
         if (this.checkCollision(this.p1Rocket, this.fastShip)) {
             this.p1Rocket.reset();
             this.p1Score += this.fastShip.points;
             this.scoreLeft.text = this.p1Score;
             this.shipExplode(this.fastShip);
+            // update time
+            this.clock.delay += 5000;
+            this.gameTime += 5;
         }
 
         // for player 2
@@ -215,12 +221,18 @@ class Play extends Phaser.Scene {
                 this.p2Score += this.ship01.points;
                 this.scoreMiddle.text = this.p2Score;
                 this.shipExplode(this.ship01);
+                // update time
+                this.clock.delay += 3000;
+                this.gameTime += 3;
             }
             if (this.checkCollision(this.p2Rocket, this.fastShip)) {
                 this.p2Rocket.reset();
                 this.p2Score += this.fastShip.points;
                 this.scoreMiddle.text = this.p2Score;
                 this.shipExplode(this.fastShip);
+                // update time
+                this.clock.delay += 5000;
+                this.gameTime += 5;
             }
         }
         
