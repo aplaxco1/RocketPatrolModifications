@@ -127,10 +127,12 @@ class Play extends Phaser.Scene {
 
         // speed increase event
         this.speedIncreaseEvent = this.time.delayedCall(30000, () => {
-            this.ship03.moveSpeed += 2;
-            this.ship02.moveSpeed += 2;
-            this.ship01.moveSpeed += 2;
-            this.fastShip.moveSpeed += 2;
+            if (this.ship01.moveSpeed == game.settings.spaceshipSpeed) {
+                this.ship03.moveSpeed += 2;
+                this.ship02.moveSpeed += 2;
+                this.ship01.moveSpeed += 2;
+                this.fastShip.moveSpeed += 2;
+            }
         }, null, this);
 
     }
